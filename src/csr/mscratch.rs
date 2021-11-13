@@ -16,20 +16,20 @@ impl Mscratch {
     }
 
     #[inline]
+    pub fn from_read() -> Self {
+        let bits: u64;
+        csrr!("mscratch", bits);
+        Self { bits }
+    }
+
+    #[inline]
     pub fn bits(self) -> u64 {
         self.bits
     }
-}
 
-#[inline]
-pub fn read() -> Mscratch {
-    let bits: u64;
-    csrr!("mscratch", bits);
-    Mscratch { bits }
-}
-
-#[inline]
-pub fn write(mscratch: Mscratch) {
-    let mscratch = mscratch.bits();
-    csrw!("mscratch", mscratch);
+    #[inline]
+    pub fn write(self) {
+        let mscratch = self.bits();
+        csrw!("mscratch", mscratch);
+    }
 }

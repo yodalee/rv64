@@ -16,24 +16,24 @@ impl Mepc {
         Self { bits }
     }
 
+    /// Reads the CSR
+    #[inline]
+    pub fn from_read() -> Self {
+        let bits: u64;
+        csrr!("mepc", bits);
+        Self { bits }
+    }
+
     /// Return the content of the register as raw bits
     #[inline]
     pub fn bits(self) -> u64 {
         self.bits
     }
-}
 
-/// Reads the CPU register
-#[inline]
-pub fn read() -> Mepc {
-    let bits: u64;
-    csrr!("mepc", bits);
-    Mepc { bits }
-}
-
-/// Writes to the CPU register.
-#[inline]
-pub fn write(mepc: Mepc) {
-    let mepc = mepc.bits();
-    csrw!("mepc", mepc);
+    /// Writes to the CPU register.
+    #[inline]
+    pub fn write(self) {
+        let mepc = self.bits();
+        csrw!("mepc", mepc);
+    }
 }

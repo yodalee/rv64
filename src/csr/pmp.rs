@@ -1,5 +1,6 @@
 
-//! Physical Memory Protection (PMP) 
+//! Physical Memory Protection (PMP)
+//! TODO: Abstract the register operation
 
 use crate::{csrw, csrr};
 
@@ -61,6 +62,19 @@ impl PMPConfig {
     }
 
     #[inline]
+    pub fn from_read() -> u64 {
+        let bits;
+        csrr!("pmpcfg0", bits);
+        bits
+    }
+
+    #[inline]
+    pub fn write(self) {
+        let config = self.bits;
+        csrw!("pmpcfg0", config);
+    }
+
+    #[inline]
     pub fn set_config(&mut self, mode: PMPConfigMode) {
         match mode {
             PMPConfigMode::Read  => self.bits |= 1 << 0,
@@ -77,17 +91,4 @@ impl PMPConfig {
             }
         }
     }
-}
-
-#[inline]
-pub fn read() -> u64 {
-    let x;
-    csrr!("pmpcfg0", x);
-    x
-}
-
-#[inline]
-pub fn write(config: PMPConfig) {
-    let config = config.bits;
-    csrw!("pmpcfg0", config);
 }

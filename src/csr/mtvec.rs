@@ -16,10 +16,25 @@ impl Mtvec {
         Self { bits }
     }
 
+    /// Reads the CPU register
+    #[inline]
+    pub fn from_read() -> Self {
+        let bits: u64;
+        csrr!("mtvec", bits);
+        Self { bits }
+    }
+
     /// Return the content of the register as raw bits
     #[inline]
     fn bits(self) -> u64 {
         self.bits
+    }
+
+    /// Writes to the CPU register.
+    #[inline]
+    pub fn write(self) {
+        let mtvec = self.bits();
+        csrw!("mtvec", mtvec);
     }
 
     #[inline]
@@ -28,17 +43,3 @@ impl Mtvec {
     }
 }
 
-/// Reads the CPU register
-#[inline]
-pub fn read() -> Mtvec {
-    let bits: u64;
-    csrr!("mtvec", bits);
-    Mtvec { bits }
-}
-
-/// Writes to the CPU register.
-#[inline]
-pub fn write(mtvec: Mtvec) {
-    let mtvec = mtvec.bits();
-    csrw!("mtvec", mtvec);
-}

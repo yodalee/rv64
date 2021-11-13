@@ -18,24 +18,24 @@ impl Medeleg {
         Self { bits }
     }
 
+    /// Reads the CPU register
+    #[inline]
+    pub fn from_read() -> Self {
+        let bits: u64;
+        csrr!("medeleg", bits);
+        Self { bits }
+    }
+
     /// Return the content of the register as raw bits
     #[inline]
     pub fn bits(self) -> u64 {
         self.bits
     }
-}
 
-/// Reads the CPU register
-#[inline]
-pub fn read() -> Medeleg {
-    let bits: u64;
-    csrr!("medeleg", bits);
-    Medeleg { bits }
-}
-
-/// Writes to the CPU register.
-#[inline]
-pub fn write(medeleg: Medeleg) {
-    let medeleg = medeleg.bits();
-    csrw!("medeleg", medeleg);
+    /// Writes to the CPU register.
+    #[inline]
+    pub fn write(self) {
+        let bits = self.bits();
+        csrw!("medeleg", bits);
+    }
 }

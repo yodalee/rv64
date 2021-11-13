@@ -16,10 +16,25 @@ impl Mstatus {
         Self { bits }
     }
 
+    /// Reads the CPU register
+    #[inline]
+    pub fn from_read() -> Self {
+        let bits: u64;
+        csrr!("mstatus", bits);
+        Self { bits }
+    }
+
     /// Return the content of the register as raw bits
     #[inline]
     fn bits(self) -> u64 {
         self.bits
+    }
+
+    /// Writes to the CPU register.
+    #[inline]
+    pub fn write(self) {
+        let mstatus = self.bits();
+        csrw!("mstatus", mstatus);
     }
 
     #[inline]
@@ -71,19 +86,4 @@ pub enum Mode {
     SupervisedMode,
     /// UserMode, 0x00
     UserMode,
-}
-
-/// Reads the CPU register
-#[inline]
-pub fn read() -> Mstatus {
-    let bits: u64;
-    csrr!("mstatus", bits);
-    Mstatus { bits }
-}
-
-/// Writes to the CPU register.
-#[inline]
-pub fn write(mstatus: Mstatus) {
-    let mstatus = mstatus.bits();
-    csrw!("mstatus", mstatus);
 }

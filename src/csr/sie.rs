@@ -12,8 +12,21 @@ pub struct Sie {
 
 impl Sie {
     #[inline]
+    pub fn from_read() -> Self {
+        let bits: u64;
+        csrr!("sie", bits);
+        Self { bits }
+    }
+
+    #[inline]
     pub fn bits(self) -> u64 {
         self.bits
+    }
+
+    #[inline]
+    pub fn write(self) {
+        let bits = self.bits();
+        csrw!("sie", bits);
     }
 
     #[inline]
@@ -33,17 +46,4 @@ impl Sie {
             Interrupt::ExternalInterrupt => (1 << 9),
         }
     }
-}
-
-#[inline]
-pub fn read() -> Sie {
-    let bits: u64;
-    csrr!("sie", bits);
-    Sie { bits }
-}
-
-#[inline]
-pub fn write(sie: Sie) {
-    let bits = sie.bits();
-    csrw!("sie", bits);
 }
