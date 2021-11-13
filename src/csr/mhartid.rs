@@ -11,14 +11,14 @@ pub struct Mhartid {
 
 impl Mhartid {
     #[inline]
+    pub fn from_read() -> Self {
+        let bits: u64;
+        csrr!("mhartid", bits);
+        Self { bits }
+    }
+
+    #[inline]
     pub fn bits(self) -> u64 {
         self.bits
     }
-}
-
-#[inline]
-pub fn read() -> Mhartid {
-    let bits: u64;
-    csrr!("mhartid", bits);
-    Mhartid { bits }
 }
