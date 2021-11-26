@@ -2,6 +2,7 @@
 //! Supervisor Address Translation and Protection Register (satp)
 
 use crate::{csrw, csrr};
+use bit_field::BitField;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Satp {
@@ -35,4 +36,32 @@ impl Satp {
         let bits = self.bits();
         csrw!("satp", bits);
     }
+
+    #[inline]
+    pub fn set_addr(&mut self, addr: u64) {
+        self.bits.set_bits(0..44, (addr >> 12).get_bits(0..44));
+    }
+
+    /// Set mode
+    #[inline]
+    pub fn set_mode(&mut self, mode: SatpMode) {
+        let value = match mode {
+            SatpMode::ModeNone => 0,
+            SatpMode::ModeSv39 => 8,
+            SatpMode::ModeSv48 => 9,
+            SatpMode::ModeSv57 => 10,
+        };
+        self.bits.set_bits(60..64, value);
+    }
+}
+
+pub enum SatpMode {
+    /// No translation or protection
+    ModeNone,
+    /// Sv39
+    ModeSv39,
+    /// Sv48
+    ModeSv48,
+    /// Sv57
+    ModeSv57,
 }
