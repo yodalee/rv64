@@ -11,6 +11,7 @@ pub mod mtvec;
 pub mod pmp;
 pub mod satp;
 pub mod scause;
+pub mod sepc;
 pub mod sie;
 pub mod sip;
 pub mod sstatus;
