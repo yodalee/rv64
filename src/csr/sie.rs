@@ -12,6 +12,11 @@ pub struct Sie {
 
 impl Sie {
     #[inline]
+    pub fn from_bits(bits: u64) -> Self {
+        Self { bits }
+    }
+
+    #[inline]
     pub fn from_read() -> Self {
         let bits: u64;
         csrr!("sie", bits);
