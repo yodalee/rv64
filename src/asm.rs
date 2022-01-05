@@ -6,3 +6,10 @@ pub fn sfence_vma() {
         asm!("sfence.vma zero, zero")
     }
 }
+
+/// Stall CPU until interrupt
+pub fn wfi() {
+    unsafe {
+        asm!("wfi")
+    }
+}
