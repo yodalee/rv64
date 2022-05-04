@@ -40,7 +40,7 @@ impl Sstatus {
 
     #[inline]
     pub fn get_spp(self) -> Mode {
-        if self.bits & (1 << 8) == (1 << 8) {
+        if self.bits.get_bit(8) {
             Mode::SupervisedMode
         } else {
             Mode::UserMode
@@ -48,12 +48,19 @@ impl Sstatus {
     }
 
     #[inline]
-    pub fn set_mpp(&mut self, mode: Mode) {
-        self.bits &= !(1 << 8);
-        self.bits |= match mode {
-            Mode::SupervisedMode => (1 << 8),
-            Mode::UserMode =>       (0 << 8),
-        }
+    pub fn set_spp(&mut self, mode: Mode) {
+        self.bits.set_bit(8, match mode {
+            Mode::SupervisedMode => true,
+            Mode::UserMode =>       false,
+        });
+    }
+
+    pub fn get_spie(self) -> bool {
+        self.bits.get_bit(5)
+    }
+
+    pub fn set_spie(&mut self, val: bool) {
+        self.bits.set_bit(5, val);
     }
 
     #[inline]
@@ -63,18 +70,22 @@ impl Sstatus {
 
     #[inline]
     pub fn enable_interrupt(&mut self, mode: Mode) {
-        self.bits |= match mode {
-            Mode::SupervisedMode => (1 << 1),
-            Mode::UserMode =>       (1 << 0),
+        let offset = match mode {
+            Mode::SupervisedMode => 1,
+            // FIXME no such mode interrupt
+            Mode::UserMode =>       0,
         };
+        self.bits.set_bit(offset, true);
     }
 
     #[inline]
     pub fn disable_interrupt(&mut self, mode: Mode) {
-        self.bits &= match mode {
-            Mode::SupervisedMode => !(1 << 1),
-            Mode::UserMode =>       !(1 << 0),
-        }
+        let offset = match mode {
+            Mode::SupervisedMode => 1,
+            // FIXME no such mode interrupt
+            Mode::UserMode =>       0,
+        };
+        self.bits.set_bit(offset, false);
     }
 }
 
