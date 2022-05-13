@@ -7,6 +7,14 @@ pub fn sfence_vma() {
     }
 }
 
+/// fence
+pub fn sync_synchronize() {
+    unsafe {
+        // synchronize all memory operation
+        asm!("fence")
+    }
+}
+
 /// Stall CPU until interrupt
 pub fn wfi() {
     unsafe {
