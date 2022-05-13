@@ -26,7 +26,7 @@ impl Mstatus {
 
     /// Return the content of the register as raw bits
     #[inline]
-    fn bits(self) -> u64 {
+    pub fn bits(self) -> u64 {
         self.bits
     }
 
