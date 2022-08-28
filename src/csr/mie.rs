@@ -41,9 +41,9 @@ impl Mie {
     #[inline]
     pub fn set_machine_enable(&mut self, interrupt: Interrupt) {
         self.bits |= match interrupt {
-            Interrupt::SoftwareInterrupt => (1 << 3),
-            Interrupt::TimerInterrupt =>    (1 << 7),
-            Interrupt::ExternalInterrupt => (1 << 11),
+            Interrupt::SoftwareInterrupt => 1 << 3,
+            Interrupt::TimerInterrupt =>    1 << 7,
+            Interrupt::ExternalInterrupt => 1 << 11,
         }
     }
 }

@@ -52,18 +52,18 @@ impl Mstatus {
     pub fn set_mpp(&mut self, mode: Mode) {
         self.bits &= !(3 << 11);
         self.bits |= match mode {
-            Mode::MachineMode =>    (3 << 11),
-            Mode::SupervisedMode => (1 << 11),
-            Mode::UserMode =>       (0 << 11),
+            Mode::MachineMode =>    3 << 11,
+            Mode::SupervisedMode => 1 << 11,
+            Mode::UserMode =>       0 << 11,
         }
     }
 
     #[inline]
     pub fn enable_interrupt(&mut self, mode: Mode) {
         self.bits |= match mode {
-            Mode::MachineMode =>    (1 << 3),
-            Mode::SupervisedMode => (1 << 1),
-            Mode::UserMode =>       (1 << 0),
+            Mode::MachineMode =>    1 << 3,
+            Mode::SupervisedMode => 1 << 1,
+            Mode::UserMode =>       1 << 0,
         };
     }
 

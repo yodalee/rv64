@@ -46,9 +46,9 @@ impl Sie {
     #[inline]
     pub fn set_supervisor_enable(&mut self, interrupt: Interrupt) {
         self.bits |= match interrupt {
-            Interrupt::SoftwareInterrupt => (1 << 1),
-            Interrupt::TimerInterrupt =>    (1 << 5),
-            Interrupt::ExternalInterrupt => (1 << 9),
+            Interrupt::SoftwareInterrupt => 1 << 1,
+            Interrupt::TimerInterrupt =>    1 << 5,
+            Interrupt::ExternalInterrupt => 1 << 9,
         }
     }
 }
