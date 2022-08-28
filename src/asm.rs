@@ -1,3 +1,4 @@
+use core::arch::asm;
 
 /// flush the TLB
 pub fn sfence_vma() {
